@@ -10,7 +10,7 @@ def main():
 
     # Добавить таблицу Inventory.
     cur.execute('''CREATE TABLE Inventory (ItemID INTEGER PRIMARY KEY NOT NULL,
-     ItemName TEXT, Price REAL)''')
+     ItemName TEXT NOT NULL, Price REAL NOT NULL)''')
 
     # Зафиксировать изменения
     conn.commit()
