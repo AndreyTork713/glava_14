@@ -1,24 +1,29 @@
 import sqlite3
 
+
 def main():
-    # Переменная управления циклом
     again = 'д'
 
-    # 1/5
-    conn = sqlite3.connect('inventory.db')
-
+    conn = sqlite3.connect('Inventory.db')
     cur = conn.cursor()
 
     while again == 'д':
-        # Получить название и цену позиции
-        item_name = input('Название: ')
-        price = float(input('Цена: '))
-
-        # Добавить позицию в таблицу Inventory.
+        item_name = input('Введите наименование товара: ')
+        item_price = float(input('Введите цену товара: '))
         cur.execute('''INSERT INTO Inventory (ItemName, Price)
-                        VALUES (?, ?)''',
-                    (item_name, price))
+                    VALUES (?, ?)''',
+                    (item_name, item_price))
 
         # Добавить ещё?
+        again = input('Продолжить добавление позиций в таблицу? д/н: ')
+
+    conn.commit()
+    conn.close()
+
+
+if __name__ == '__main__':
+    main()
+
+
 
 
