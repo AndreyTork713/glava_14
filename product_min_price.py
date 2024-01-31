@@ -7,7 +7,7 @@ def main():
 
     min_price = float(input('Введите минимальную цену: '))
 
-    cur.execute('''SELECT Description, RetailPrice from Products WHERE RetailPrice >= ?''',
+    cur.execute('''SELECT Description, RetailPrice from Products WHERE RetailPrice >= ? ORDER BY RetailPrice''',
                 (min_price,))
 
     # Извлекаем результаты
@@ -22,6 +22,11 @@ def main():
             print(f'{row[0]:30} {row[1]:>5}')
     else:
         print('Ни одно изделие не найдено')
+
+    cur.execute('''SELECT Description FROM Products WHERE Description LIKE "%горячего%"''')
+    res = cur.fetchall()
+    for item in res:
+        print(item)
 
     conn.close()
 
