@@ -23,7 +23,7 @@ def main():
     else:
         print('Ни одно изделие не найдено')
 
-    cur.execute('''SELECT Description FROM Products WHERE Description LIKE "%горячего%"''')
+    cur.execute('''SELECT Description FROM Products WHERE Description LIKE "%Плитка%"''')
     res = cur.fetchall()
     for item in res:
         print(item)
