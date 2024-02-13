@@ -1,4 +1,4 @@
-sqlite3
+import sqlite3
 
 
 MIN_CHOICE = 1
@@ -25,13 +25,29 @@ def main():
             delete()
 
 
-
-
+# функция выводит на экран главное меню
 def display_menu():
-    pass
+    print('\n-----Меню ведения учета инструментов-----')
+    print('1. Создать новую позицию')
+    print('2. Прочитать позицию')
+    print('3. Обновить позицию')
+    print('4. Удалить позицию')
+    print('5. Выйти из программы')
 
+
+# функция получает от пользователя выбранный пункт меню
 def get_menu_choice():
-    pass
+    choice = int(input('Введите ваш вариант: '))
+    # Проверить входные данные
+    while choice < MIN_CHOICE or choice > MAX_CHOICE:
+        print(f'Допустимые варианты таковы: {MIN_CHOICE} - {MAX_CHOICE}.')
+        choice = int(input('Введите ваш вариант: '))
+    return choice
+
+
+
+
+
 
 def create():
     pass
