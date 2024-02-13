@@ -50,15 +50,40 @@ def get_menu_choice():
 
 
 def create():
-    pass
+    print('Создать новую позицию.')
+    name = input('Название позиции: ')
+    price = input('Цена: ')
+    insert_row(name, price)
 
+# функция читает существующую позицию
 def read():
-    pass
+    name = input('Введите название искомой позиции: ')
+    num_found = display_item(name)
 
 def update():
     pass
 
 def delete():
+    pass
+
+def insert_row(name, price):
+    conn = None
+    try:
+        conn = sqlite3.connect('inventory.db')
+        cur = conn.cursor()
+        cur.execute('''INSERT INTO Inventory (ItemName, Price)
+                            VALUES (?, ?)''',
+                    (name, price))
+
+        conn.commit()
+    except sqlite3.Error as err:
+        print('Ошибка базы данных!', err)
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def display_item(name):
     pass
 
 
