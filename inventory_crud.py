@@ -55,16 +55,34 @@ def create():
     price = input('Цена: ')
     insert_row(name, price)
 
+
 # функция читает существующую позицию
 def read():
     name = input('Введите название искомой позиции: ')
     num_found = display_item(name)
+    print(f'{num_found} строк(а) найдено.')
 
+
+# Функция обновляет данные существующей позиции.
 def update():
-    pass
+    # Сначала показать пользователю найденные строки
+    read()
+
+    # Получить ID выбранной позиции
+    selected_id = int(input('Выберете ID обновляемой позиции: '))
+
+    # Получить новые значения для названия и цены.
+    name = input('Введите новое название позиции: ')
+    price = input('Введите новую цену: ')
+
+    # Обновить строку.
+    num_updated = update_row(selected_id, name, price)
+    print(f'{num_updated} строк(а) обновлено.')
+
 
 def delete():
     pass
+
 
 def insert_row(name, price):
     conn = None
@@ -83,8 +101,58 @@ def insert_row(name, price):
             conn.close()
 
 
+# функция выводит на экран все позиции
+# с совпадающими названиями позиций.
 def display_item(name):
-    pass
+    conn = None
+    results = []
+    try:
+        conn = sqlite3.connect('inventory.db')
+        cur = conn.cursor()
+        cur.execute('''SELECT * FROM Inventory WHERE ItemName == ?''',
+                    (name,))
+        results = cur.fetchall()
+
+        for row in results:
+            print(f'ID: {row[0]:<3}, Название: {row[1]:<15}'
+                  f'Цена: {row[2]:<6}')
+    except sqlite3.Error as err:
+        print('Ошибка базы данных', err)
+    finally:
+        if conn is not None:
+            conn.close()
+        return len(results)
+
+
+# функция обновляет существующую строку новыми
+# названием и ценой. Возвращается обновленное число строк.
+def update_row(id, name, price):
+    conn = None
+    try:
+        conn = sqlite3.connect('inventory.db')
+        cur = conn.cursor()
+        cur.execute('''UPDATE Inventory
+                             SET ItemName = ?,
+                                 Price = ?
+                                  WHERE ItemID == ?''',
+                    (name, price, id))
+
+        conn.commit()
+        num_updated = cur.rowcount
+    except sqlite3.Error as err:
+        print('Ошибка базы данных', err)
+
+    finally:
+        if conn != None:
+            conn.close()
+
+    return num_updated
+
+
+
+
+
+
 
 
 
