@@ -44,11 +44,6 @@ def get_menu_choice():
         choice = int(input('Введите ваш вариант: '))
     return choice
 
-
-
-
-
-
 def create():
     print('Создать новую позицию.')
     name = input('Название позиции: ')
@@ -80,8 +75,18 @@ def update():
     print(f'{num_updated} строк(а) обновлено.')
 
 
+# функция удалает позицию
 def delete():
-    pass
+    # Сначала показать пользователю найденные строки
+    read()
+    # Получить ID выбранной позиции
+    selected_id = int(input('Выберете ID удаляемой позиции: '))
+
+    # Подтвердить удаление
+    sure = input('Вы уверены, что хотите удалить позицию? (д/н): ')
+    if sure.lower() == 'д':
+        num_deleted = delete_row(selected_id)
+        print(f'{num_deleted} строк(а) удалено.')
 
 
 def insert_row(name, price):
@@ -143,18 +148,31 @@ def update_row(id, name, price):
         print('Ошибка базы данных', err)
 
     finally:
-        if conn != None:
+        if conn is not None:
             conn.close()
 
     return num_updated
 
 
+def delete_row(id):
+    conn = None
+    try:
+        conn = sqlite3.connect('inventory.db')
+        cur = conn.cursor()
+        cur.execute('''DELETE FROM Inventory
+                                 WHERE ItemID == ?''',
+                    ( id,))
 
+        conn.commit()
+        num_deleted = cur.rowcount
+    except sqlite3.Error as err:
+        print('Ошибка базы данных', err)
 
+    finally:
+        if conn is not None:
+            conn.close()
 
-
-
-
+    return num_deleted
 
 
 if __name__ == '__main__':
