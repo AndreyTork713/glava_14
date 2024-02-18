@@ -80,8 +80,10 @@ def update():
     print(f'{num_updated} строк(а) обновлено.')
 
 
+# функция удаляет позицию
 def delete():
-    pass
+    # Сначала показать пользователю найденные строки.
+    read()
 
 
 def insert_row(name, price):
@@ -143,18 +145,10 @@ def update_row(id, name, price):
         print('Ошибка базы данных', err)
 
     finally:
-        if conn != None:
+        if conn is not None:
             conn.close()
 
-    return num_updated
-
-
-
-
-
-
-
-
+        return num_updated
 
 
 if __name__ == '__main__':
