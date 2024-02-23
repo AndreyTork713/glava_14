@@ -9,12 +9,15 @@ UPDATE = 3
 DELETE = 4
 EXIT = 5
 
+
 def main():
     choice = 0
     while choice is not EXIT:
-        display_menu()
-        choice = get_menu_choice()
+        display_menu() # Показать главное меню программы
+        choice = get_menu_choice()  # Определиться с выбором пункта меню
 
+        # Элементы CRUD
+        #---------------------
         if choice == CREATE:
             create()
         elif choice == READ:
@@ -44,6 +47,7 @@ def get_menu_choice():
         choice = int(input('Введите ваш вариант: '))
     return choice
 
+# РЕАЛИЗАЦИЯ ФУНКЦИЙ ЭЛЕМЕНТОВ "CRUD"
 def create():
     print('Создать новую позицию.')
     name = input('Название позиции: ')
