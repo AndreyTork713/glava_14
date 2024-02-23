@@ -39,7 +39,10 @@ def display_menu():
 
 
 def get_menu_choice():
-    choice = input('Выберете пункт меню: ')
+    choice = int(input('Выберете пункт меню: '))
+    while choice < MIN_CHOICE or choice > MAX_CHOICE:
+        print(f'Допустимые варианты от {MIN_CHOICE} до {MAX_CHOICE}.')
+        choice = int(input('Выберете пункт меню: '))
     return choice
 
 

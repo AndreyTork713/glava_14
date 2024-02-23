@@ -1,6 +1,5 @@
 import sqlite3
 
-
 MIN_CHOICE = 1
 MAX_CHOICE = 5
 CREATE = 1
@@ -9,12 +8,14 @@ UPDATE = 3
 DELETE = 4
 EXIT = 5
 
+
 def main():
     choice = 0
     while choice is not EXIT:
-        display_menu()
-        choice = get_menu_choice()
+        display_menu() # Показать меню
+        choice = get_menu_choice()  # Определиться с выбором
 
+        # Элементы CRUD
         if choice == CREATE:
             create()
         elif choice == READ:
@@ -43,10 +44,6 @@ def get_menu_choice():
         print(f'Допустимые варианты таковы: {MIN_CHOICE} - {MAX_CHOICE}.')
         choice = int(input('Введите ваш вариант: '))
     return choice
-
-
-
-
 
 
 def create():
@@ -81,11 +78,19 @@ def update():
 
 
 def delete():
-    pass
+    read()
+    # Выбор позиции для удаления
+    selected_id = int(input('Выберете ID удаляемой позиции: '))
+    # Подтвердить удаление выбранной позиции
+    sure = input('Вы уверены, что хотите удалить выбоанную позицию? д/н')
+    if sure.lower() == 'д':
+        num_deleted = delete_row(selected_id)
+        print(f'{num_deleted} строк(а) удалено')
+
 
 
 def insert_row(name, price):
-    conn = None
+    #conn = None
     try:
         conn = sqlite3.connect('inventory.db')
         cur = conn.cursor()
@@ -148,13 +153,22 @@ def update_row(id, name, price):
 
     return num_updated
 
+def delete_row(id):
+    conn = None
+    try:
+        conn = sqlite3.connect('inventory.db')
+        cur = conn.cursor()
+        cur.execute('''DELETE FROM Inventory WHERE ItemID == ?''',
+                    (id,))
+        conn.commit()
+        num_deleted = cur.rowcount
+    except sqlite3.Error as err:
+        print('Ошибка базы данных', err)
+    finally:
+        if conn is not None:
+            conn.close()
 
-
-
-
-
-
-
+    return num_deleted
 
 
 if __name__ == '__main__':
